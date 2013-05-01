@@ -3,7 +3,11 @@ Plant p;
 
 void setup() {
     size(500, 500);
-    p = new Plant(new PVector(100, 100), new DNA());
+    p = new Plant(new PVector(random(100, 400), random(100, 400)), new DNA());
+    org.add(p);
+    p = new Plant(new PVector(random(100, 400), random(100, 400)), new DNA());
+    org.add(p);
+    p = new Plant(new PVector(random(100, 400), random(100, 400)), new DNA());
     org.add(p);
     Herbivore h = new Herbivore(new PVector(200, 200), new DNA());
     org.add(h);

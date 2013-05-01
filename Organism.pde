@@ -28,6 +28,16 @@ class Organism {
     void move() {
         float vx = map(noise(xoff), 0, 1, -maxSpd, maxSpd);
         float vy = map(noise(yoff), 0, 1, -maxSpd, maxSpd);
+        if (location.x < 0 || location.x > width) {
+            vx = -vx;
+            xoff += 0.01;
+            yoff += 0.01;
+        }
+        if (location.y < 0 || location.y > height) {
+            vy = -vy;
+            xoff += 0.01;
+            yoff += 0.01;
+        }
         PVector velocity = new PVector(vx, vy);
         xoff += 0.01;
         yoff += 0.01;
@@ -37,7 +47,7 @@ class Organism {
     void render() {
         ellipseMode(CENTER);
         noStroke();
-        fill(0, 0, 0);
+        fill(colour);
         ellipse(location.x, location.y, r, r);
     }
 }
@@ -83,6 +93,7 @@ class Herbivore extends Organism {
                 continue;
             }
             if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
+                System.out.println("ATTEMPT TO EAT");
                 eat(o);
             }
         }
