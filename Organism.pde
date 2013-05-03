@@ -28,16 +28,28 @@ class Organism {
     void move() {
         float vx = map(noise(xoff), 0, 1, -maxSpd, maxSpd);
         float vy = map(noise(yoff), 0, 1, -maxSpd, maxSpd);
-        if (location.x < 0 || location.x > width) {
-            vx = -vx;
+        if (location.x < 30) {
+            vx = abs(vx) * 2;
             xoff += 0.01;
             yoff += 0.01;
         }
-        if (location.y < 0 || location.y > height) {
-            vy = -vy;
+        if (location.x > width - 30) {
+            vx = -abs(vx) * 2;
             xoff += 0.01;
             yoff += 0.01;
         }
+
+        if (location.y < 30) {
+            vy = abs(vy) * 2;
+            xoff += 0.01;
+            yoff += 0.01;
+        }
+        if (location.y > height - 30) {
+            vy = -abs(vy) * 2;
+            xoff += 0.01;
+            yoff += 0.01;
+        }
+
         PVector velocity = new PVector(vx, vy);
         xoff += 0.01;
         yoff += 0.01;
@@ -48,7 +60,7 @@ class Organism {
         ellipseMode(CENTER);
         noStroke();
         fill(colour);
-        ellipse(location.x, location.y, r, r);
+        ellipse(location.x - r/2, location.y-r/2, r, r);
     }
 }
 
@@ -58,6 +70,7 @@ class Plant extends Organism {
         type = 0;
         troph = 0;
         hCap = 1000;
+        colour = color(0, 200, 0);
     }
 
     void run() {
@@ -75,6 +88,7 @@ class Herbivore extends Organism {
         type = 1;
         troph = 1;
         hCap = 200;
+        colour = color(150, 150, 0);
     }
 
     void run() {
@@ -96,6 +110,51 @@ class Herbivore extends Organism {
                 System.out.println("ATTEMPT TO EAT");
                 eat(o);
             }
+        }
+        if (random(0, 1) < 0.002) {
+            DNA newDNA = dna;
+            newDNA.mutate(0.001);
+            Herbivore p = new Herbivore(location, newDNA);
+            org.add(p);
+        }
+    }
+}
+
+class Carnivore1 extends Organism {
+    Carnivore1(PVector loc, DNA newDNA) {
+        super(loc, newDNA);
+        type = 2;
+        troph = 2;
+        hCap = 200;
+        colour = color(255, 0, 0);
+    }
+
+    void run() {
+        if (health < hCap) {
+            health -= 0.1;
+            r += 0.01;
+            if (health < 0) {
+                org.remove(this);
+            }
+        }
+        move();
+        render();
+        for (int i = 0; i < org.size(); i++) {
+            Organism o = org.get(i);
+            if (o == this) {
+                continue;
+            }
+            if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
+                System.out.println("ATTEMPT TO EAT");
+                eat(o);
+            }
+        }
+
+        if (random(0, 1) < 0.002) {
+            DNA newDNA = dna;
+            newDNA.mutate(0.001);
+            Carnivore1 p = new Carnivore1(location, newDNA);
+            org.add(p);
         }
     }
 }
