@@ -3,7 +3,7 @@ final boolean T = true;
 final boolean F = false;
 boolean[][] fc = {
     {
-        F, T, F, T, F, T
+        F, T, F, T, T, T
     }
     , 
     {
@@ -28,27 +28,27 @@ boolean[][] fc = {
 };
 
 boolean edible(Organism a, Organism b) {
+    if (b.r > a.r * 2) {
+        return F;
+    }
     if (a.troph == b.troph) {
         if (a.troph > 1) {
             if (a.health > b.health * 2) {
-                System.out.println("aye");
                 return T;
             } 
             else {
-                System.out.println("nay");
                 return F;
             }
         }
-        else return false;
+        else {
+            return F;
+        }
     } 
     else {
-        System.out.println("check");
         if (fc[b.type][a.type]) {
-            System.out.println("aye");
             return T;
         } 
         else {
-            System.out.println("nay");
             return F;
         }
     }

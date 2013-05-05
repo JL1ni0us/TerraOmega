@@ -4,6 +4,7 @@ class Organism {
     float health, hCap, xoff, yoff, r, maxSpd;
     color colour;
     int type, troph;
+    boolean negX, negY;
 
     Organism(PVector loc, DNA newDNA) {
         location = loc.get();
@@ -12,7 +13,7 @@ class Organism {
         yoff = random(1000);
         dna = newDNA;
         maxSpd = map(dna.geneSeq[0], 0, 1, 15, 0);
-        r = map(dna.geneSeq[0], 0, 1, 0, 50);
+        r = map(dna.geneSeq[0], 0, 1, 0, 25);
     }
 
     void run() {
@@ -22,6 +23,7 @@ class Organism {
         if (edible(this, f)) {
             health += f.health / 10;
             org.remove(org.indexOf(f));
+            r *= 1.005;
         }
     }
 
@@ -29,25 +31,32 @@ class Organism {
         float vx = map(noise(xoff), 0, 1, -maxSpd, maxSpd);
         float vy = map(noise(yoff), 0, 1, -maxSpd, maxSpd);
         if (location.x < 30) {
-            vx = abs(vx) * 2;
+            negX = !negX;
             xoff += 0.01;
             yoff += 0.01;
         }
         if (location.x > width - 30) {
-            vx = -abs(vx) * 2;
+            negX = !negX;
             xoff += 0.01;
             yoff += 0.01;
         }
 
         if (location.y < 30) {
-            vy = abs(vy) * 2;
+            negY = !negY;
             xoff += 0.01;
             yoff += 0.01;
         }
         if (location.y > height - 30) {
-            vy = -abs(vy) * 2;
+            negY = !negY;
             xoff += 0.01;
             yoff += 0.01;
+        }
+
+        if (negX) {
+            vx = -vx;
+        }
+        if (negY) {
+            vy = -vy;
         }
 
         PVector velocity = new PVector(vx, vy);
@@ -60,7 +69,7 @@ class Organism {
         ellipseMode(CENTER);
         noStroke();
         fill(colour);
-        ellipse(location.x - r/2, location.y-r/2, r, r);
+        ellipse(location.x, location.y, r * 2, r * 2);
     }
 }
 
@@ -69,14 +78,14 @@ class Plant extends Organism {
         super(loc, newDNA);
         type = 0;
         troph = 0;
-        hCap = 1000;
+        hCap = 500;
         colour = color(0, 200, 0);
     }
 
     void run() {
         if (health < hCap) {
             health += 0.1;
-            r += 0.05;
+            r += 0.005;
         }
         render();
     }
@@ -88,7 +97,7 @@ class Herbivore extends Organism {
         type = 1;
         troph = 1;
         hCap = 200;
-        colour = color(150, 150, 0);
+        colour = color(255, 255, 0);
     }
 
     void run() {
@@ -107,11 +116,10 @@ class Herbivore extends Organism {
                 continue;
             }
             if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
-                System.out.println("ATTEMPT TO EAT");
                 eat(o);
             }
         }
-        if (random(0, 1) < 0.002) {
+        if (random(0, 1) < 0.003) {
             DNA newDNA = dna;
             newDNA.mutate(0.001);
             Herbivore p = new Herbivore(location, newDNA);
@@ -145,7 +153,6 @@ class Carnivore1 extends Organism {
                 continue;
             }
             if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
-                System.out.println("ATTEMPT TO EAT");
                 eat(o);
             }
         }
@@ -159,3 +166,115 @@ class Carnivore1 extends Organism {
     }
 }
 
+class Carnivore2 extends Organism {
+    Carnivore2(PVector loc, DNA newDNA) {
+        super(loc, newDNA);
+        type = 3;
+        troph = 3;
+        hCap = 200;
+        colour = color(255, 0, 255);
+    }
+
+    void run() {
+        if (health < hCap) {
+            health -= 0.1;
+            r += 0.01;
+            if (health < 0) {
+                org.remove(this);
+            }
+        }
+        move();
+        render();
+        for (int i = 0; i < org.size(); i++) {
+            Organism o = org.get(i);
+            if (o == this) {
+                continue;
+            }
+            if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
+                eat(o);
+            }
+        }
+
+        if (random(0, 1) < 0.001) {
+            DNA newDNA = dna;
+            newDNA.mutate(0.001);
+            Carnivore2 p = new Carnivore2(location, newDNA);
+            org.add(p);
+        }
+    }
+}
+
+class Omnivore1 extends Organism {
+    Omnivore1(PVector loc, DNA newDNA) {
+        super(loc, newDNA);
+        type = 4;
+        troph = 2;
+        hCap = 200;
+        colour = color(0, 0, 255);
+    }
+
+    void run() {
+        if (health < hCap) {
+            health -= 0.1;
+            r += 0.01;
+            if (health < 0) {
+                org.remove(this);
+            }
+        }
+        move();
+        render();
+        for (int i = 0; i < org.size(); i++) {
+            Organism o = org.get(i);
+            if (o == this) {
+                continue;
+            }
+            if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
+                eat(o);
+            }
+        }
+
+        if (random(0, 1) < 0.002) {
+            DNA newDNA = dna;
+            newDNA.mutate(0.001);
+            Omnivore1 p = new Omnivore1(location, newDNA);
+            org.add(p);
+        }
+    }
+}
+class Omnivore2 extends Organism {
+    Omnivore2(PVector loc, DNA newDNA) {
+        super(loc, newDNA);
+        type = 5;
+        troph = 3;
+        hCap = 200;
+        colour = color(0, 255, 255);
+    }
+
+    void run() {
+        if (health < hCap) {
+            health -= 0.1;
+            r += 0.01;
+            if (health < 0) {
+                org.remove(this);
+            }
+        }
+        move();
+        render();
+        for (int i = 0; i < org.size(); i++) {
+            Organism o = org.get(i);
+            if (o == this) {
+                continue;
+            }
+            if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
+                eat(o);
+            }
+        }
+
+        if (random(0, 1) < 0.0005) {
+            DNA newDNA = dna;
+            newDNA.mutate(0.001);
+            Omnivore2 p = new Omnivore2(location, newDNA);
+            org.add(p);
+        }
+    }
+}
