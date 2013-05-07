@@ -24,7 +24,7 @@ class Organism {
     if (edible(this, f)) {
       health += f.health / 10;
       org.remove(org.indexOf(f));
-      r += sqrt(f.r) * 0.1;
+      r += sqrt(f.r) * 0.001;
     }
   }
 
