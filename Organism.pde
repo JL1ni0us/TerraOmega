@@ -28,25 +28,28 @@ class Organism {
     }
 
     void move() {
+        if (health < 20) {
+            r *=0.999;
+        }
         float vx = map(noise(xoff), 0, 1, -maxSpd, maxSpd);
         float vy = map(noise(yoff), 0, 1, -maxSpd, maxSpd);
-        if (location.x < 30) {
+        if (location.x < 0) {
             negX = !negX;
             xoff += 0.01;
             yoff += 0.01;
         }
-        if (location.x > width - 30) {
+        if (location.x > width) {
             negX = !negX;
             xoff += 0.01;
             yoff += 0.01;
         }
 
-        if (location.y < 30) {
+        if (location.y < 0) {
             negY = !negY;
             xoff += 0.01;
             yoff += 0.01;
         }
-        if (location.y > height - 30) {
+        if (location.y > height) {
             negY = !negY;
             xoff += 0.01;
             yoff += 0.01;
@@ -97,7 +100,7 @@ class Herbivore extends Organism {
         type = 1;
         troph = 1;
         hCap = 200;
-        colour = color(255, 255, 0);
+        colour = color(125, 150, 50);
     }
 
     void run() {

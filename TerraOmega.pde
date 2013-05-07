@@ -9,15 +9,15 @@ Omnivore2 o2;
 void setup() {
     size(800, 800);
     //frameRate(30);
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1000; i++) {
         p = new Plant(new PVector(random(0, width), random(0, height)), new DNA());
         org.add(p);
     }
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 100; i++) {
         h = new Herbivore(new PVector(random(0, width), random(0, height)), new DNA());
         org.add(h);
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
         c1 = new Carnivore1(new PVector(random(0, width), random(0, height)), new DNA());
         org.add(c1);
     }

@@ -43,7 +43,19 @@ boolean edible(Organism a, Organism b) {
         else {
             return F;
         }
-    } 
+    } else if (a.troph < b.troph) {
+        if (a.troph > 1) {
+            if (a.health > b.health * 10) {
+                return T;
+            } 
+            else {
+                return F;
+            }
+        }
+        else {
+            return F;
+        }
+    }
     else {
         if (fc[b.type][a.type]) {
             return T;
