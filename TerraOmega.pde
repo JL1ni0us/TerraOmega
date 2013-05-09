@@ -37,33 +37,6 @@ void setup() {
   }
 }
 
-void init() {
-  for (int i = 0; i < 250; i++) {
-    p = new Plant(new PVector(random(0, width), random(0, height)), new DNA());
-    org.add(p);
-  }
-  for (int i = 0; i < 25; i++) {
-    h = new Herbivore(new PVector(random(0, width), random(0, height)), new DNA());
-    org.add(h);
-  }
-  for (int i = 0; i < 3; i++) {
-    c1 = new Carnivore1(new PVector(random(0, width), random(0, height)), new DNA());
-    org.add(c1);
-  }
-  for (int i = 0; i < 1; i++) {
-    c2 = new Carnivore2(new PVector(random(0, width), random(0, height)), new DNA());
-    org.add(c2);
-  }
-  for (int i = 0; i < 3; i++) {
-    o1 = new Omnivore1(new PVector(random(0, width), random(0, height)), new DNA());
-    org.add(o1);
-  }
-  for (int i = 0; i < 1; i++) {
-    o2 = new Omnivore2(new PVector(random(0, width), random(0, height)), new DNA());
-    org.add(o2);
-  }
-}
-
 void draw() {
   background(0);
   if (random(0, 1) < 0.03) {
@@ -109,15 +82,6 @@ boolean sketchFullScreen() {
 void keyTyped() {
   if (key == 'z') {
     deploy = -1;
-  } 
-  else if (key == 'd') {
-    for (int k = org.size(); k > 0; k--) {
-      if (k >= org.size()) {
-        continue;
-      }
-      org.remove(k);
-    }
-    init();
   }
   else {
     int tmp = key - 48;
