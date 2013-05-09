@@ -88,7 +88,7 @@ class Plant extends Organism {
     super(loc, newDNA);
     type = 0;
     troph = 0;
-    hCap = 500;
+    hCap = 1000;
     colour = color(0, 200, 0);
   }
 
@@ -106,7 +106,7 @@ class Herbivore extends Organism {
     super(loc, newDNA);
     type = 1;
     troph = 1;
-    hCap = 200;
+    hCap = 500;
     colour = color(125, 150, 50);
   }
 
@@ -169,6 +169,12 @@ class Carnivore1 extends Organism {
       if (o == this) {
         continue;
       }
+      if (edible(o, this)) {
+        if (dist(location.x, location.y, o.location.x, o.location.y) < 3 * r + o.r) {
+          negX = !negX;
+          negY = !negY;
+        }
+      }
       if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
         eat(o);
       }
@@ -207,6 +213,12 @@ class Carnivore2 extends Organism {
       if (o == this) {
         continue;
       }
+      if (edible(o, this)) {
+        if (dist(location.x, location.y, o.location.x, o.location.y) < 3 * r + o.r) {
+          negX = !negX;
+          negY = !negY;
+        }
+      }
       if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
         eat(o);
       }
@@ -226,7 +238,7 @@ class Omnivore1 extends Organism {
     super(loc, newDNA);
     type = 4;
     troph = 2;
-    hCap = 200;
+    hCap = 100;
     colour = color(0, 0, 255);
   }
 
@@ -244,6 +256,12 @@ class Omnivore1 extends Organism {
       Organism o = org.get(i);
       if (o == this) {
         continue;
+      }
+      if (edible(o, this)) {
+        if (dist(location.x, location.y, o.location.x, o.location.y) < 3 * r + o.r) {
+          negX = !negX;
+          negY = !negY;
+        }
       }
       if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
         eat(o);
@@ -263,7 +281,7 @@ class Omnivore2 extends Organism {
     super(loc, newDNA);
     type = 5;
     troph = 3;
-    hCap = 200;
+    hCap = 100;
     colour = color(0, 255, 255);
   }
 
@@ -281,6 +299,12 @@ class Omnivore2 extends Organism {
       Organism o = org.get(i);
       if (o == this) {
         continue;
+      }
+      if (edible(o, this)) {
+        if (dist(location.x, location.y, o.location.x, o.location.y) < 3 * r + o.r) {
+          negX = !negX;
+          negY = !negY;
+        }
       }
       if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
         eat(o);
