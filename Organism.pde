@@ -17,6 +17,7 @@ class Organism {
   }
 
   void run() {
+    
   }
 
 
@@ -124,6 +125,12 @@ class Herbivore extends Organism {
       if (o == this) {
         continue;
       }
+      if (edible(o, this)) {
+        if (dist(location.x, location.y, o.location.x, o.location.y) < 3 * r + o.r) {
+          negX = !negX;
+          negY = !negY;
+        }
+      }
       if (dist(location.x, location.y, o.location.x, o.location.y) < r + o.r) {
         eat(o);
       }
@@ -143,6 +150,7 @@ class Carnivore1 extends Organism {
     type = 2;
     troph = 2;
     hCap = 200;
+    
     colour = color(255, 0, 0);
   }
 
@@ -280,6 +288,7 @@ class Omnivore2 extends Organism {
     }
 
     if (random(0, 1) < 0.0005) {
+      r /= 2;
       DNA newDNA = dna;
       newDNA.mutate(0.001);
       Omnivore2 p = new Omnivore2(location, newDNA);
