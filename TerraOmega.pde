@@ -10,7 +10,7 @@ int deploy;
 void setup() {
   size(displayWidth, displayHeight);
   background(50, 50, 50);
-  //frameRate(30);
+  frameRate(30);
   for (int i = 0; i < 250; i++) {
     p = new Plant(new PVector(random(0, width), random(0, height)), new DNA());
     org.add(p);
@@ -39,10 +39,11 @@ void setup() {
 
 void draw() {
   background(0);
-  if (random(0, 1) < 0.03) {
+  if (random(0, 1) < 0.1) {
     p = new Plant(new PVector(random(0, width), random(0, height)), new DNA());
     org.add(p);
   }
+  /*
   if (random(0, 1) < 0.003) {
     h = new Herbivore(new PVector(random(0, width), random(0, height)), new DNA());
     org.add(h);
@@ -59,6 +60,7 @@ void draw() {
     o1 = new Omnivore1(new PVector(random(0, width), random(0, height)), new DNA());
     org.add(o1);
   }
+  */
 
   for (int k = 0; k < org.size(); k++) {
     org.get(k).run();
@@ -66,7 +68,7 @@ void draw() {
       continue;
     }
   }
-  for (int k = org.size(); k > 400; k--) {
+  for (int k = org.size(); k > 450; k--) {
     if (k >= org.size()) {
       continue;
     }

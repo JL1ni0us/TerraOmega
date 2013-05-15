@@ -26,7 +26,7 @@ class Organism {
       health += f.health / 10;
       org.remove(org.indexOf(f));
       r += sqrt(f.r) * 0.001;
-    }
+    } 
   }
 
   void hunt() {
@@ -136,6 +136,7 @@ class Herbivore extends Organism {
       }
     }
     if (random(0, 1) < 0.003) {
+         r /= sqrt(2);
       DNA newDNA = dna;
       newDNA.mutate(0.001);
       Herbivore p = new Herbivore(location, newDNA);
@@ -181,6 +182,7 @@ class Carnivore1 extends Organism {
     }
 
     if (random(0, 1) < 0.002) {
+         r /= sqrt(2);
       DNA newDNA = dna;
       newDNA.mutate(0.001);
       Carnivore1 p = new Carnivore1(location, newDNA);
@@ -225,6 +227,7 @@ class Carnivore2 extends Organism {
     }
 
     if (random(0, 1) < 0.001) {
+         r /= sqrt(2);
       DNA newDNA = dna;
       newDNA.mutate(0.001);
       Carnivore2 p = new Carnivore2(location, newDNA);
@@ -269,6 +272,7 @@ class Omnivore1 extends Organism {
     }
 
     if (random(0, 1) < 0.002) {
+         r /= sqrt(2);
       DNA newDNA = dna;
       newDNA.mutate(0.001);
       Omnivore1 p = new Omnivore1(location, newDNA);
@@ -312,9 +316,9 @@ class Omnivore2 extends Organism {
     }
 
     if (random(0, 1) < 0.0005) {
-      r /= 2;
+      r /= sqrt(2);
       DNA newDNA = dna;
-      newDNA.mutate(0.001);
+      newDNA.mutate(0.01);
       Omnivore2 p = new Omnivore2(location, newDNA);
       org.add(p);
     }
